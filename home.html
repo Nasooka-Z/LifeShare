@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="home-page">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Top-right user actions -->
+    <div class="top-right-actions">
+        <span class="welcome-text">Welcome, {{ user }}</span>
+
+        <a href="{{ url_for('logout') }}" class="icon-btn logout" title="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+
+        <form action="{{ url_for('delete_account') }}" method="POST" style="display:inline;"
+            onsubmit="return confirm('Are you sure you want to delete your account permanently?');">
+            <button type="submit" class="icon-btn delete" title="Delete Account">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </form>
+
+    </div>
+
+    <!-- Title -->
+    <h1 class="home-title">LifeShare</h1>
+
+    <!-- Category Grid -->
+    <div class="category-grid">
+        <a href="{{ url_for('category', category='Happy') }}" class="category-card happy">
+            <div class="icon">😊</div>
+            <div class="label">Happy</div>
+        </a>
+
+        <a href="{{ url_for('category', category='Sad') }}" class="category-card sad">
+            <div class="icon">😢</div>
+            <div class="label">Sad</div>
+        </a>
+
+        <a href="{{ url_for('category', category='Dark') }}" class="category-card dark">
+            <div class="icon">🌙</div>
+            <div class="label">Dark</div>
+        </a>
+
+        <a href="{{ url_for('category', category='Inspiration') }}" class="category-card insp">
+            <div class="icon">✨</div>
+            <div class="label">Inspiration</div>
+        </a>
+
+        <a href="{{ url_for('category', category='Love') }}" class="category-card love">
+            <div class="icon">❤️</div>
+            <div class="label">Love</div>
+        </a>
+
+        <a href="{{ url_for('category', category='Growth') }}" class="category-card growth">
+            <div class="icon">🌱</div>
+            <div class="label">Growth</div>
+        </a>
+
+        <a href="{{ url_for('trending') }}" class="category-card trending">
+            <div class="icon">🔥</div>
+            <div class="label">Trending</div>
+        </a>        
+        
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const flashes = document.querySelectorAll('.flash');
+            flashes.forEach(flash => {
+                flash.style.transition = "opacity 0.5s ease";
+                flash.style.opacity = "0";
+                setTimeout(() => flash.remove(), 500);
+            });
+        }, 3000);
+    </script>
+
+</body>
+</html>

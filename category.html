@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category }} - LifeShare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="category-page">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Header -->
+    <div class="category-header">
+        <h1>{{ category }} Stories</h1>
+        <a href="{{ url_for('home') }}" class="back-btn">⬅Home</a>
+    </div>
+
+    <!-- Add Story -->
+    <div class="category-list">
+        <h2>Add Your Story</h2>
+        <form method="POST" action="{{ url_for('add_story', category=category) }}">
+            <textarea name="story_content"
+                      placeholder="Write your story here..."
+                      required></textarea>
+            <br><br>
+            <button type="submit">Share Story</button>
+        </form>
+    </div>
+
+    <!-- Stories -->
+    <div class="stories-list">
+        <h2>All Stories</h2>
+
+        {% for story in stories %}
+        <div class="story">
+
+            <p>{{ story.content }}</p>
+            <small><b>— {{ story.username }}</b></small>
+
+            <button class="like-btn" data-id="{{ story.id }}">
+                ❤️ <span id="like-count-{{ story.id }}">{{ story.likes }}</span>
+            </button>
+
+            <!-- COMMENT FORM (this is what you are missing on screen) -->
+            <form class="comment-form" data-id="{{ story.id }}">
+                <input type="text" name="comment" placeholder="Write a comment..." required>
+                <button type="submit">Comment</button>
+            </form>
+
+            <!-- COMMENTS LIST -->
+            <div class="comments" id="comments-{{ story.id }}">
+                {% for c in story.comments %}
+                    <p>
+                        <strong>{{ c['username'] }}:</strong> {{ c['comment'] }}
+
+                        {% if c['username'] == user %}
+                        <form method="POST"
+                            action="{{ url_for('delete_comment', comment_id=c['id']) }}"
+                            style="display:inline;"
+                            onsubmit="return confirm('Delete this comment?');">
+                            <button type="submit" class="delete-btn">🗑️</button>
+                        </form>
+                        {% endif %}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <!-- Edit / Delete (Only Owner) -->
+            {% if story.username == user %}
+
+            <form method="POST" action="{{ url_for('edit_story', story_id=story.id) }}">
+                <textarea name="story_content">{{ story.content }}</textarea>
+                <button type="submit">Update</button>
+            </form>
+
+            <form method="POST"
+                  action="{{ url_for('delete_story', story_id=story.id) }}"
+                  onsubmit="return confirm('Are you sure you want to delete this story?');">
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+
+            {% endif %}
+        </div>
+
+        {% else %}
+            <p>No stories yet. Be the first to share ✨</p>
+        {% endfor %}
+    </div>
+    <script>
+        setTimeout(() => {
+            const flashes = document.querySelectorAll('.flash');
+            flashes.forEach(flash => {
+                flash.style.transition = "opacity 0.5s ease";
+                flash.style.opacity = "0";
+    
+                setTimeout(() => {
+                    flash.remove();
+                }, 500);
+            });
+        }, 3000); // 30,000 ms = 30 seconds
+    </script>
+    <script>
+        /* LIKE WITHOUT REFRESH */
+        document.querySelectorAll(".like-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.dataset.id;
+        
+                fetch(`/like/${id}`, { method: "POST" })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.likes !== undefined) {
+                            document.getElementById(`like-count-${id}`).textContent = data.likes;
+                        }
+                    });
+            });
+        });
+        
+        /* COMMENT WITHOUT REFRESH */
+        document.querySelectorAll(".comment-form").forEach(form => {
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+        
+                const id = form.dataset.id;
+                const fd = new FormData(form);
+        
+                fetch(`/add_comment/${id}`, {
+                    method: "POST",
+                    body: fd
+                })
+                .then(r => r.json())
+                .then(data => {
+                    const box = document.getElementById(`comments-${id}`);
+                    const p = document.createElement("p");
+
+                    let deleteBtn = "";
+                    if (data.username === "{{ user }}") {
+                        deleteBtn = `
+                            <form method="POST"
+                                action="/delete_comment/${data.id}"
+                                style="display:inline;"
+                                onsubmit="return confirm('Delete this comment?');">
+                                <button type="submit" class="delete-btn">🗑️</button>
+                            </form>
+                        `;
+                    }
+
+                    p.innerHTML = `<strong>${data.username}:</strong> ${data.comment} ${deleteBtn}`;
+                    box.appendChild(p);
+                    form.reset();
+                });
+
+            });
+        });
+        </script>
+        
+
+</body>
+</html>

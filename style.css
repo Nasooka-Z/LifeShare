@@ -1,0 +1,352 @@
+/* =========================================================
+   GENERAL RESET
+========================================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* =========================================================
+   HOME PAGE BACKGROUND (ONLY HOME)
+========================================================= */
+body.home-page {
+    background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.096),
+                rgba(253, 253, 253, 0.096)
+            ),
+            url("/static/images/home.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* =========================================================
+   LOGIN & REGISTER BACKGROUND (CLEAN CARD UI)
+========================================================= */
+body.login-register-page {
+    background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0),
+                rgba(253, 253, 253, 0)
+            ),
+            url("/static/images/reg.png") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Login / Register Card */
+.login-register-page form {
+    background: linear-gradient(
+        135deg,
+        rgba(247, 247, 247, 0),
+        rgba(255, 255, 255, 0)
+    ),
+    url("/static/images/log.png") no-repeat center center fixed;
+    padding: 40px;
+    width: 360px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+.login-register-page h2 {
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #7a3801;
+}
+
+.login-register-page input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+}
+
+.login-register-page button {
+    width: 100%;
+    padding: 12px;
+    background: #af4804;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.login-register-page button:hover {
+    background: #7c2e01ab;
+}
+
+.login-register-page a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* =========================================================
+   FLASH MESSAGES
+========================================================= */
+.flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.flash {
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    animation: slideDown 0.4s ease;
+}
+
+.flash.success { background: #d1fae5; color: #065f46; }
+.flash.error { background: #fee2e2; color: #991b1b; }
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   TOP RIGHT ACTIONS (HOME)
+========================================================= */
+.top-right-actions {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.welcome-text {
+    font-weight: 600;
+    color: #222;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.icon-btn.logout { background: #3498db; }
+.icon-btn.delete { background: #e74c3c; }
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+/* =========================================================
+   HOME TITLE
+========================================================= */
+.home-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    color: #814900;
+}
+
+/* =========================================================
+   CATEGORY GRID (2x3)
+========================================================= */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto 80px auto;
+    padding: 20px;
+}
+
+.category-card {
+    height: 110px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card .icon { font-size: 32px; margin-bottom: 6px; }
+.category-card .label { font-size: 15px; }
+
+/* Remove the common yellow glow */
+.category-card:hover {
+    transform: translateY(-5px);
+}
+/* Colors – matched to old paper / vintage background */
+.category-card.happy  { background: #e6d8a8; color: #5b3a1e; }
+.category-card.sad    { background: #d1b07a; color: #4a2f18; }
+.category-card.dark   { background: #979797; color: #f5e9d6; }
+.category-card.insp   { background: #caa6c3; color: #4a1f3f; }
+.category-card.love   { background: #d9a5a5; color: #5a1f1f; }
+.category-card.growth { background: #a8c3a0; color: #1f3d1f; }
+
+/* Softer vintage hover glow */
+.category-card.happy:hover  { box-shadow: 0 18px 35px rgba(230, 216, 168, 0.8); }
+.category-card.sad:hover    { box-shadow: 0 18px 35px rgba(209, 176, 122, 0.8); }
+.category-card.dark:hover   { box-shadow: 0 18px 35px rgba(141, 140, 140, 0.9); }
+.category-card.insp:hover   { box-shadow: 0 18px 35px rgba(202, 166, 195, 0.8); }
+.category-card.love:hover   { box-shadow: 0 18px 35px rgba(217, 165, 165, 0.8); }
+.category-card.growth:hover { box-shadow: 0 18px 35px rgba(168, 195, 160, 0.8); }
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 768px) {
+    .category-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .category-grid { grid-template-columns: 1fr; }
+    .category-card { height: 90px; }
+}
+/* =========================================================
+   CATEGORY / STORY PAGE UI (ONLY CATEGORY PAGES)
+========================================================= */
+body.category-page {
+    background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.041),
+                rgba(253, 253, 253, 0.027)
+            ),
+            url("/static/images/note.png") no-repeat center center fixed;
+    padding: 40px 20px;
+}
+
+/* Page Title */
+.category-page h1 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.category-page a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.category-page a:hover {
+    text-decoration: underline;
+}
+
+/* Add Story Card */
+.category-page .add-story-box {
+    background: rgb(245, 238, 238);
+    max-width: 700px;
+    margin: 20px 0 40px 0;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+body.category-page textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    resize: vertical;
+    margin-bottom: 12px;
+
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+        url("/static/images/write.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+}
+
+
+.category-page button {
+    padding: 10px 18px;
+    background: #2563eb;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.category-page button:hover {
+    background: #1d4ed8;
+}
+
+/* Stories List */
+.category-page .stories-container {
+    max-width: 700px;
+}
+
+/* Stories List */
+.category-page .stories-list {
+    max-width: 700px;
+}
+
+.category-page .story {
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+    padding: 24px;
+
+    border-radius: 18px;
+    color: #1f2937;
+    line-height: 1.6;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+        url("/static/images/write.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+
+
+.category-page .empty-text {
+    color: #6b7280;
+    font-style: italic;
+}
+
+.category-card.trending {
+    background: #ddb369;   /* orange-gold */
+    color: #3b1f00;
+}
+
+.category-card.trending:hover {
+    box-shadow: 0 18px 35px rgba(255, 211, 135, 0.8);
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trending Stories</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="category-page">
+
+    <div class="category-header">
+        <h1>🔥 Trending Stories</h1>
+        <a href="{{ url_for('home') }}">⬅ Home</a>
+    </div>
+
+    <div class="stories-list">
+        {% for story in stories %}
+            <div class="story">
+                <p>{{ story['content'] }}</p>
+                <small>
+                    ❤️ {{ story['like_count'] or 0 }} likes —
+                    {{ story['username'] }}
+                </small>
+            </div>
+        {% else %}
+            <p>No trending stories yet.</p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
